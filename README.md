@@ -1,164 +1,158 @@
-# 抖音无水印下载API
-这是一个免费，开源，简单，方便的抖音无水印下载API。
-## 功能
-- 抖音视频/图集解析
-- 抖音视频/图集无水印下载
-## 文档
-接口地址如下：
+# 小红书视频解析流程
 
-```text
-https://douyinapi.herokuapp.com/api
+以下是解析小红书视频的具体步骤与所需的关键链接：
+
+## 流程步骤
+
+### 1. 输入链接解析
+- 用户输入小红书链接，可能是以下类型：
+  - 短链接，例如：`https://xhslink.com/...`
+  - 普通链接，例如：`https://www.xiaohongshu.com/explore/...`
+  - 分享链接，例如：`https://www.xiaohongshu.com/discovery/item/...`
+
+88 诡秘之主发布了一篇小红书笔记，快来看吧！ 😆 Ebsjwey8PSgXlMl 😆 http://xhslink.com/a/K8Jc0b，复制本条信息，打开【小红书】App查看精彩内容！
+
+，复制打开会跳转到如下链接：  
+https://www.xiaohongshu.com/discovery/item/67c8332b000000000d014493?app_platform=android&ignoreEngage=true&
+
+15 少女乐队的呐喊官方发布了一篇小红书笔记，快来看吧！ 😆 ae2HsBnGKGZhJAs 😆 http://xhslink.com/a/dWXWmYAab，复制本条信息，打开【小红书】App查看精彩内容！
+
+https://www.xiaohongshu.com/discovery/item/67cb94b1000000002803ff8b?app_platform=android&ignoreEngage=true
+
+
+17 东映动画发布了一篇小红书笔记，快来看吧！ 😆 2CPKUyWzQJkhOI0 😆 http://xhslink.com/a/ewBnezKQvGBab，复制本条信息，打开【小红书】App查看精彩内容！
+网页源码中直接就有视频链接，
+
+https://www.xiaohongshu.com/discovery/item/67f4cf74000000001d023988?app_platform=android&ignoreEngage=true&app_version=
+查看exiftool可知
+
+“全球 Web 图标
+xiaozhongpai.com
+https://www.xiaozhongpai.com
+剪映APP导出的视频文件会携带识别符信息 - 小众派
+/images/search?view=detailV2&ccid=ecPu0dtW&id=000109F2777AB0B3EFFC67E6668ACCFCEC920102&thid=OIP.ecPu0dtWYbHSEq_ejjva8QHaJ8&mediaurl=https://www.xiaozhongpai.com/wp-content/uploads/2020/08/jianying02.jpg&q=douyin_beauty_me&ck=E2140F64864B1A69CDA4D9468FDCED12&idpp=rc&idpview=singleimage&form=rc2idp
+本文介绍了剪映APP导出的视频文件在属性备注里会添加douyin_beauty_me”
+
+其中
+html中：
+
 ```
-请求参数：
-- url：抖音视频链接
-
-
-1. 网页版直接复制
-```text
-https://www.douyin.com/video/7102408528748367136
+<meta name="og:video" content="这里是有水印视频链接">
 ```
+无水印原链接：
+直接在html中的"originVideoKey":"无水印视频id"
+
+```
+r = requests.get(url)
+key = re.findall(r'{\"originVideoKey\":\".*?\"}', r.text)
 
 
-2. 口令
-```text
-0.58 XZZ:/ 女孩子主动找你，是因为她喜欢你，她不再主动找你，是因为你回的太敷衍，不是她不喜欢你了，是你让她觉得她很多余
-%情感 %治愈 %热门 %爱情 %正能量 %励志 %动漫 %文案%小陌治愈驿站  https://v.douyin.com/FEUgdxn/ 复制此链接，打开Dou音搜索，直接观看视频！
-```
-
-3. 缩短版
-```text
-https://v.douyin.com/FEUgdxn/
-```
-
-### 请求格式
-```
-http://douyinapi.herokuapp.com/api?url=<链接>
-```
-
-### 返回格式
-- 视频
-```json
-{
-    "ok":true,
-    "result":{
-        "author":{
-            "avatar":"https://p6.douyinpic.com/aweme/1080x1080/aweme-avatar/tos-cn-avt-0015_e70b935d905b7f6b7520df99105d79f0.jpeg?from=116350172",
-            "douyin_id":"liu1111525",
-            "name":"小陌治愈驿站",
-            "singnature":"可能是世界上最萌的(小笨蛋呐）\n        生活虽苦·但你很甜\n文案|投稿|拿视频|🛰：liu08091111《备注来意》"
-        },
-        "details":"https://www.iesdouyin.com/web/api/v2/aweme/iteminfo/?item_ids=7102408528748367136",
-        "music":{
-            "author":"小陌治愈驿站",
-            "duration":"11",
-            "title":"@小陌治愈驿站创作的原声一小陌治愈驿站",
-            "url":"https://sf3-cdn-tos.douyinstatic.com/obj/ies-music/7102408551435668254.mp3"
-        },
-        "video":{
-            "descriptions":"女孩子主动找你，是因为她喜欢你，她不再主动找你，是因为你回的太敷衍，不是她不喜欢你了，是你让她觉得她很多余\n#情感 #治愈 #热门 #爱情 #正能量 #励志 #动漫 #文案#小陌治愈驿站",
-            "statistics":{
-                "comment_count":"280",
-                "create_time":"1653658351",
-                "hashtag":[
-                    "情感",
-                    "治愈",
-                    "热门",
-                    "爱情",
-                    "正能量",
-                    "励志",
-                    "动漫",
-                    "文案",
-                    "小陌治愈驿站"
-                ],
-                "likes_count":"5449",
-                "play_count":"0",
-                "share_count":"898"
-            },
-            "thumbnail_url":{
-                "url_list":"https://p3-sign.douyinpic.com/tos-cn-p-0015/8c715b06d7694e9dbd8638a3e37ca169~c5_300x400.jpeg?x-expires=1655445600&x-signature=%2Fy1XkaAJxl5wtqYnBAgec47CqAw%3D&from=4257465056_large&s=PackSourceEnum_DOUYIN_REFLOW&se=false&sc=cover&l=202206031410500102120562260C670A3C"
-            },
-            "video_url":{
-                "free_watermark":"https://v3-dy-o.zjcdn.com/3a61c2623a10f55017f1c09c702d0048/6299b406/video/tos/cn/tos-cn-ve-15c001-alinc2/3cb2379e02b44a03bc7c5b446989b95f/?a=1128&ch=0&cr=0&dr=0&cd=0%7C0%7C0%7C0&cv=1&br=502&bt=502&btag=80000&cs=0&ds=3&ft=ArkXtBnZqI2mo0PsxA-fkVQChw79HKJ&mime_type=video_mp4&qs=0&rc=OTlnZWc3OzU4Njk2ZzxoaUBpam9lOTo6ZnRnZDMzNGkzM0AwMS5fMS5fNi8xNV4yNmExYSNzZWxxcjRvMjVgLS1kLTBzcw%3D%3D&l=20220603141051010212142149486457ED",
-                "free_watermark_1080p":"https://v3-dy-o.zjcdn.com/efe309acc3ebfaa3096213cbebd7d846/6299b405/video/tos/cn/tos-cn-ve-15c001-alinc2/3cb2379e02b44a03bc7c5b446989b95f/?a=1128&ch=0&cr=0&dr=0&cd=0%7C0%7C0%7C0&cv=1&br=502&bt=502&btag=80000&cs=0&ds=3&ft=ArkXtBnZqI2mo0P_xA-fkVQChw79HKJ&mime_type=video_mp4&qs=0&rc=OTlnZWc3OzU4Njk2ZzxoaUBpam9lOTo6ZnRnZDMzNGkzM0AwMS5fMS5fNi8xNV4yNmExYSNzZWxxcjRvMjVgLS1kLTBzcw%3D%3D&l=2022060314105001020812110132618720",
-                "watermark_url":"https://aweme.snssdk.com/aweme/v1/playwm/?video_id=v0300fg10000ca8d5qrc77u7t6obhlvg&ratio=720p&line=0"
-            }
-        }
-    },
-    "status":"200"
-}
-```
-- 图集
-```json
-{
-    "ok":true,
-    "result":{
-        "album":{
-            "descriptions":"为什么初中生不给过六一🥹",
-            "heigth":"1920",
-            "image_url":[
-                "https://p6-sign.douyinpic.com/tos-cn-i-0813/d5c19515b21a4998bfb4eb6e213a19f2~noop.webp?x-expires=1656828000&x-signature=Fjk055diBz%2BJGcl91ZgJjksRFDg%3D&from=4257465056&s=PackSourceEnum_DOUYIN_REFLOW&se=false&biz_tag=aweme_images&l=202206031427520102081001702A638141",
-                "https://p26-sign.douyinpic.com/tos-cn-i-0813/f4966b6edbeb4f969e5b72a3c1959183~noop.webp?x-expires=1656828000&x-signature=WpbPrd5AimKgxH3U3%2Bz0yOY2gNk%3D&from=4257465056&s=PackSourceEnum_DOUYIN_REFLOW&se=false&biz_tag=aweme_images&l=202206031427520102081001702A638141",
-                "https://p6-sign.douyinpic.com/tos-cn-i-0813/4daeaca0dc7a4fb6b65c18535bc82aed~noop.webp?x-expires=1656828000&x-signature=1XGk6RFThE7CIA8pt2CGiIWO3Ww%3D&from=4257465056&s=PackSourceEnum_DOUYIN_REFLOW&se=false&biz_tag=aweme_images&l=202206031427520102081001702A638141"
-            ],
-            "width":"1440"
-        },
-        "author":{
-            "avatar":"https://p6.douyinpic.com/aweme/1080x1080/aweme-avatar/tos-cn-avt-0015_874da29bfe40af6fefca313eae3cbf59.jpeg?from=116350172",
-            "douyin_id":"zaizai77480",
-            "name":"深",
-            "singnature":"深爱zxy\n真的超级无敌无敌爱颜哥！😍\n颜哥让我等他回来！那我就勉为其难等一下吧😮‍💨\n颜宝我等你😘无论多久我都等你.\n异地恋中……..🥺"
-        },
-        "details":"https://www.iesdouyin.com/web/api/v2/aweme/iteminfo/?item_ids=7104629824668372264",
-        "music":{
-            "author":"Good life",
-            "duration":"9",
-            "title":"@Good life创作的原声一Good life",
-            "url":"https://sf3-cdn-tos.douyinstatic.com/obj/ies-music/7101290689490160397.mp3"
-        },
-        "statistics":{
-            "comment_count":"14",
-            "create_time":"1654175537",
-            "hashtag":[],
-            "likes_count":"1108",
-            "play_count":"0",
-            "share_count":"36"
-        }
-    },
-    "status":"200"
-}
 ```
 
-## 本地使用
-1. 克隆本代码仓库
-```bash
-$ git clone https://github.com/manho30/douyinapi.git
-$ cd douyinapi
+然后 http://sns-video-bd.xhscdn.com/{无水印视频id} 就是无水印视频链接
+
 ```
 
-2. 安装依赖库
-```bash
-$ pip install -r requirements.txt
+import requests
+import re
+import json
+
+link = 'https://www.xiaohongshu.com/explore/65e2c4fb00000000030367bd'
+
+def work(url: str) -> dict:
+    r = requests.get(url)
+    if r.status_code == 200:
+
+        url_with_watermark = re.findall(r'<meta name="og:video" content="(.*?)">', r.text)
+        if url_with_watermark:
+            url_with_watermark = url_with_watermark[0]
+        else:
+            url_with_watermark = None
+        
+        key = re.findall(r'{\"originVideoKey\":\".*?\"}', r.text)
+        if key:
+            url_without_watermark = "http://sns-video-bd.xhscdn.com/" + json.loads(key[0])["originVideoKey"]
+
 ```
+#### 操作
 
-3. 启动服务器
->服务器默认启动断口为 `5000`, 如不喜欢可更改`config.ini`中的 `port` 参数
-```bash
-$ python3 api.py
-```
+- 检测链接类型：
+  - 若为短链接，使用短链接扩展工具将其转换为普通链接。
+  - 如果是普通链接或分享链接，直接用正则表达式提取链接。
 
-## 部署到服务器
-本教程使用免费的Heroku服务器，如果你想部署到服务器， 可以接着下面的步骤：
+---
 
-1. 创建一个新的Heroku应用
-2. 将代码部署到Heroku应用， 输入命令：
-```bash
-$ heroku git:remote -a <app_name>
-$ git push heroku master
-```
-看不明白？
-自己看看 YouTube
+### 2. 提取笔记 ID
+- 从解析后的链接中提取笔记 ID。
 
-## 免责声明
-本项目仅用于学习交流，如有侵权，请联系作者删除。
+#### 操作
+- 分析链接路径，提取路径中的最后一个非空部分作为笔记 ID。
 
-使用本项目所产生的法律责任，请自行承担。
+---
+
+### 3. 获取 HTML 页面内容
+- 根据链接抓取对应的 HTML 页面。
+
+#### 操作
+- 使用 HTTP 请求工具（如 `HttpUtil.getHtml`）获取页面 HTML。
+
+---
+
+### 4. 提取页面中的 JavaScript 数据
+- 从 HTML 页面中找到包含笔记详细信息的脚本。
+
+#### 操作
+- 使用正则表达式定位 `<script>window.__INITIAL_STATE__=...</script>`。
+- 提取其中的 JSON 数据。
+
+---
+
+### 5. 解析笔记详细信息
+- 将提取的 JSON 数据解析为结构化的笔记信息。
+
+#### 操作
+- 定位笔记信息：
+  ```
+  json['note']['noteDetailMap'][linkId]['note']
+  ```
+- 提取字段：
+  - `noteId`: 笔记 ID
+  - `title`: 笔记标题
+  - `desc`: 笔记描述
+  - `type`: 笔记类型（`normal` 表示图文，`video` 表示视频）
+
+---
+
+### 6. 提取视频信息
+- 如果笔记类型为视频，提取视频资源。
+
+#### 操作
+1. 找到 `originVideoKey`：
+   ```
+   noteInfo['video']['consumer']['originVideoKey']
+   ```
+2. 构建视频 URL：
+   ```
+   https://sns-video-bd.xhscdn.com/{originVideoKey}
+   ```
+3. 获取视频时长：
+   ```
+   noteInfo['video']['capa']['duration']
+   ```
+4. 获取文件大小：
+   - 使用 HTTP 请求工具，获取视频文件的大小。
+
+---
+
+## 结果
+最终，您可以获得以下信息：
+- 视频 URL: `https://sns-video-bd.xhscdn.com/{originVideoKey}`
+- 视频时长
+- 视频文件大小
+
+
+
+
+参考：解析小红书无水印视频直链 | 回声https://iecho.cc/2024/03/03/decode-xiaohongshu-video-url/
+
+https://github.com/nilaoda/xhs_app/blob/main/lib/service/file_downloader.dart
