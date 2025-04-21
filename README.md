@@ -156,3 +156,38 @@ def work(url: str) -> dict:
 参考：解析小红书无水印视频直链 | 回声https://iecho.cc/2024/03/03/decode-xiaohongshu-video-url/
 
 https://github.com/nilaoda/xhs_app/blob/main/lib/service/file_downloader.dart
+
+
+```
+import re
+import requests
+
+class XiaohongshuVideoExtractor:
+    def __init__(self):
+        self.short_link_regex = re.compile(r'https?://xhslink\.com/\S+')
+        self.script_regex = re.compile(r'<script>window.__INITIAL_STATE__=(.*?)</script>')
+
+    def expand_short_url(self, url):
+        return requests.head(url, allow_redirects=True).url
+
+    def extract_video_url(self, input_url):
+        # Expand short links
+        if self.short_link_regex.match(input_url):
+            input_url = self.expand_short_url(input_url)
+
+        # Fetch HTML content
+        html = requests.get(input_url).text
+
+        # Extract JSON script
+        initial_state = self.script_regex.search(html).group(1)
+        json_data = eval(initial_state)  # Use a safer JSON parser in production
+
+        # Extract video key and construct video URL
+        video_key = json_data['note']['noteDetailMap'].popitem()[1]['note']['video']['consumer']['originVideoKey']
+        return f"https://sns-video-bd.xhscdn.com/{video_key}"
+
+# Example usage
+extractor = XiaohongshuVideoExtractor()
+video_url = extractor.extract_video_url("https://xhslink.com/example")
+print("Video URL:", video_url)
+```
